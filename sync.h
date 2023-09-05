@@ -3,7 +3,7 @@
 
 // Sync library
 // @author Daniela Aguilar
-// @author Fabio Calderón
+// @author Fabio CalderÃ³n
 // @author Felipe Ovares
 // @author Juleisy Porras
 
@@ -153,11 +153,11 @@ public:
     }
 
     void wait() {
-        --count_;
         unique_lock<mutex> lock(mutex_);
         if (count_ == 0) {
             condition_.wait(lock);
         }
+        --count_;
     }
 
     void signal() {
