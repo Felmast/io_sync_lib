@@ -18,61 +18,6 @@ void printList(int* list, int start, int end){
     std::cout << "\n";
 }
 
-/*sync_monitor* m;
-sync_barrier* mb;
-sync_semaphor* sm;
-
-void printList(int* list, int start, int end){
-    for(int i=start; i <= end; i++){
-        std::cout << list[i];
-        if(i < end)
-            std::cout << ", ";
-    }
-    std::cout << "\n";
-}
-
-
-static void* foo(void* arg){
-    sync_monitor::monitor_lock(m);
-    std::cout << "World 1!\n";
-    sync_monitor::monitor_unlock(m);
-    pthread_exit(0);
-}
-
-static void* foo2(void* arg){
-    sync_monitor::monitor_lock(m);
-    std::cout << "World 2!\n";
-    sync_monitor::monitor_unlock(m);
-    pthread_exit(0);
-}
-
-
-static void* foo3(void* arg){
-    sync_monitor::monitor_lock(m, 1);
-    std::cout << "world 3!\n";
-    sync_monitor::monitor_unlock(m, 1);
-    //Sleep(1000);
-    sync_monitor::monitor_unlock(m);
-    pthread_exit(0);
-}
-
-static void* foo_barrier1(void* arg){
-    int index = sync_barrier::get_current_waiting(mb);
-    sync_barrier::barrier_lock(mb);
-    std::cout << "Finished: " << index << "\n";
-    pthread_exit(0);
-}
-
-static void* foo_semaphor(void* arg){
-    bool available = sync_semaphor::semaphor_available(sm);
-    sync_semaphor::semaphor_acquire(sm);
-    std::cout << "Semaphor: " << (int)arg << ", " << available << "\n";
-    sync_semaphor::semaphor_release(sm);
-    pthread_exit(0);
-}
-*/
-
-
 struct merge_list{
     int* list;
     int size;
@@ -93,9 +38,6 @@ static void* merge_sort_aux(void* args){
     //binary AND of any int with "1" will return either 0 or 1, if the first bit is active, which also means that is odd
     //Then "not" that bit, because !0 = true
     mid = (!(l->end & 1))? mid-1  : mid;
-
-    //std::cout << l->start << ", " << mid << ", " << l->end << "\n";
-    //printList(l->ml->list, l->start, l->end);
 
     int tmp[l->end - l->start + 1];
     int pos = 0;
@@ -202,52 +144,6 @@ static void* merge_sort(void* args){
 
 
 int main() {
-    /*m = new sync_monitor(10);
-
-    //MONITOR
-    sync_monitor::monitor_lock(m);
-
-    pthread_t t1, t2, t3;
-
-    pthread_create(&t1, nullptr, &foo, nullptr);
-    pthread_create(&t2, nullptr, &foo2, nullptr);
-    pthread_create(&t3, nullptr, &foo3, nullptr);
-
-    std::cout << "Hello world!\n";
-
-    sync_monitor::monitor_set_condition(m, 1, true);
-
-    pthread_join(t1, nullptr);
-    pthread_join(t2, nullptr);
-    pthread_join(t3, nullptr);
-
-    std::cout << "Bye world!\n";
-
-    //BARRIER
-    mb = new sync_barrier(10);
-    pthread_t barrier_threads[10];
-    for(int i = 0; i < 9; i++){
-        pthread_create(&barrier_threads[i], nullptr, &foo_barrier1, nullptr);
-    }
-    std::cout << "\nBarrier\n";
-    sync_barrier::barrier_lock(mb);
-
-    for(int i = 0; i < 10; i++){
-        pthread_join(barrier_threads[i], nullptr);
-    }
-
-    //SEMPAHOR
-    std::cout << "\n\nSemaphor\n";
-    sm = new sync_semaphor(3);
-    pthread_t semaphor_threads[10];
-
-    for(int i = 0; i < 10; i++){
-        pthread_create(&semaphor_threads[i], nullptr, &foo_semaphor, (void*)i);
-    }
-
-    for(int i = 0; i < 10; i++){
-        pthread_join(semaphor_threads[i], nullptr);
-    }*/
 
     //MERGE SORT
     std::cout << "\n\nMerge Sort\n";
@@ -263,10 +159,5 @@ int main() {
     pthread_join(megresort, nullptr);
 
     printList(mlist.list, 0, mlist.size-1);
-
-
-    //delete m;
-    //delete mb;
-    //delete sm;
     return 0;
 }

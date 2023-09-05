@@ -149,18 +149,18 @@ class sync_monitor{
 
 class Semaphore {
 public:
-    Semaphore(int count = 0) : count_(count) {}
+    Semaphore(int count = 0) : count_(count) {
+    }
 
     void wait() {
+        --count_;
         unique_lock<mutex> lock(mutex_);
         if (count_ == 0) {
             condition_.wait(lock);
         }
-        --count_;
     }
 
     void signal() {
-        unique_lock<mutex> lock(mutex_);
         ++count_;
         condition_.notify_one();
     }
